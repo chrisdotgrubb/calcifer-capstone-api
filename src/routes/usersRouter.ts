@@ -3,7 +3,7 @@ import {create, deleteUser, getAll} from "../controllers/usersController";
 
 const router = Router();
 
-//				'/api'
+//				'/api/users'
 
 router.get("/", getAll);
 
