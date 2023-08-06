@@ -1,9 +1,9 @@
 import {connect, connection} from "mongoose";
-import dotenv from 'dotenv';
+import {config} from "dotenv";
 
-dotenv.config();
+config();
 
-const url: string = process.env.DATABASE_URL || '';
+const url: string = process.env.DATABASE_URL || "";
 connect(url);
 
 const db = connection;

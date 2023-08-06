@@ -1,11 +1,14 @@
 import {Router} from "express";
 import {create, deleteUser, getAll} from "../controllers/usersController";
-const router = Router()
 
-router.get('/', getAll)
+const router = Router();
 
-router.post('/', create)
+//				'/api'
 
-router.delete('/', deleteUser)
+router.get("/", getAll);
+
+router.post("/", create);
+
+router.delete("/", deleteUser);
 
 export default router;

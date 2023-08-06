@@ -5,7 +5,7 @@ import {hash} from "bcrypt";
 const SALT_ROUNDS: number = 8;
 
 
-export async function getAll(req: Request, res: Response): Promise<Response | void> {
+export async function getAll(req: Request, res: Response): Promise<Response> {
 	try {
 		const users = await User.find().select("-password").lean();
 		if (!users || users.length === 0) {
@@ -14,13 +14,13 @@ export async function getAll(req: Request, res: Response): Promise<Response | vo
 		const context = {
 			users,
 		};
-		res.status(200).json(context);
+		return res.status(200).json(context);
 	} catch (err) {
-		res.status(400).json({error: err});
+		return res.status(400).json({error: err});
 	}
 }
 
-export async function create(req: Request, res: Response): Promise<Response | void> {
+export async function create(req: Request, res: Response): Promise<Response> {
 	const {username, password} = req.body;
 	if (!username || !password) {
 		return res.status(400).json({error: "Username and password required"});
@@ -33,16 +33,16 @@ export async function create(req: Request, res: Response): Promise<Response | vo
 		const hashed: string = await hash(password, SALT_ROUNDS);
 		const user = await User.create({username, password: hashed, role: "user"});
 		if (user) {
-			res.status(201).json({message: `'${username}' created successfully`});
+			return res.status(201).json({message: `'${username}' created successfully`});
 		} else {
 			return res.status(400).json({error: "Creation failed"});
 		}
 	} catch (err) {
-		res.status(400).json({error: err});
+		return res.status(400).json({error: err});
 	}
 }
 
-export async function deleteUser(req: Request, res: Response): Promise<Response | void> {
+export async function deleteUser(req: Request, res: Response): Promise<Response> {
 	const {id} = req.body;
 	if (!id) {
 		return res.status(400).json({error: "id required"});
@@ -56,8 +56,8 @@ export async function deleteUser(req: Request, res: Response): Promise<Response 
 		user.isActive = false;
 		await user.save();
 		
-		res.status(200).json({message: "Deactivated user account"});
+		return res.status(200).json({message: "Deactivated user account"});
 	} catch (err) {
-		res.status(400).json({error: err});
+		return res.status(400).json({error: err});
 	}
 }
