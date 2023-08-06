@@ -4,6 +4,7 @@ import {IOrder} from "./order";
 export interface IOrderItem {
 	name: string,
 	price: number,
+	qty: number,
 	img: string,
 	order: IOrder,
 }
@@ -17,6 +18,11 @@ const orderItemSchema = new mongoose.Schema({
 			type: Number,
 			required: true,
 			min: 0,
+		},
+		qty: {
+			type: Number,
+			required: true,
+			min: 1,
 		},
 		img: {
 			type: String,

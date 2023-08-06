@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import Order from "../models/order";
-import OrderItem, {IOrderItem} from "../models/orderItem";
+import OrderItem from "../models/orderItem";
 import {IItem} from "../models/item";
 import {IUser} from "../models/user";
 
@@ -17,7 +17,7 @@ export async function index(req: Request, res: Response): Promise<Response> {
 export async function show(req: Request, res: Response): Promise<Response> {
 	const id: string = req.params.orderId;
 	try {
-		const order = await Order.findById(id);
+		const order = await Order.findById(id).populate("orderItems");
 		if (!order) return res.status(404).json({error: "Order not found"});
 		const orderItems = await OrderItem.find({order: order._id});
 		
@@ -32,24 +32,27 @@ export async function show(req: Request, res: Response): Promise<Response> {
 }
 
 export async function create(req: Request, res: Response): Promise<Response> {
-	const items: IItem[] = req.body.cartItems;
+	const cartItems: { item: IItem, qty: number }[] = req.body.cartItems;
 	const user: IUser = req.body.user;
 	const isDelivery = req.body.isDelivery;
 	const isPaid = false;
-	const price = items.reduce(((acc: number, item) => acc + item.price), 0);
+	const price = cartItems.reduce(((acc: number, cartItem) => acc + (cartItem.item.price * cartItem.qty)), 0);
 	
 	try {
 		const order = await Order.create({user, isDelivery, isPaid, price});
 		const orderItems = [];
-		for (const item of items) {
+		for (const cartItem of cartItems) {
 			const completedOrderItem = await OrderItem.create({
-				name: item.name,
-				price: item.price,
-				img: item.img,
+				name: cartItem.item.name,
+				price: cartItem.item.price,
+				qty: cartItem.qty,
+				img: cartItem.item.img,
 				order: order._id
 			});
 			orderItems.push(completedOrderItem);
 		}
+		order.orderItems = orderItems.map(item => item._id);
+		await order.save();
 		
 		const data = {
 			order,
