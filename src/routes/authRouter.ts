@@ -1,5 +1,6 @@
 import {Router} from "express";
 import {login, logout, refresh} from "../controllers/authController";
+import loginLimiter from "../middleware/loginLimiter";
 
 const router = Router();
 
@@ -7,7 +8,7 @@ const router = Router();
 
 router.get("/refresh", refresh);
 
-router.post("/", login);
+router.post("/", loginLimiter, login);
 router.post("/logout", logout);
 
 export default router;
