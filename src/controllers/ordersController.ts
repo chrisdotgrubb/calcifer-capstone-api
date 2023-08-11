@@ -1,9 +1,15 @@
 import {Request, Response} from "express";
 import Order from "../models/order";
 import OrderItem from "../models/orderItem";
-import {IItem} from "../models/item";
-import {IUser} from "../models/user";
+import Item from "../models/item";
+import User from "../models/user";
+import {ObjectId} from "mongoose";
 
+interface ICartItem {
+	_id: string | ObjectId;
+	qty: number;
+	serverItem?: any;
+}
 
 export async function index(req: Request, res: Response): Promise<Response> {
 	try {
@@ -32,21 +38,28 @@ export async function show(req: Request, res: Response): Promise<Response> {
 }
 
 export async function create(req: Request, res: Response): Promise<Response> {
-	const cartItems: { item: IItem, qty: number }[] = req.body.cartItems;
-	const user: IUser = req.body.user;
+	const cartItems: ICartItem[] = req.body.cartItems;
 	const isDelivery = req.body.isDelivery;
 	const isPaid = false;
-	const price = cartItems.reduce(((acc: number, cartItem) => acc + (cartItem.item.price * cartItem.qty)), 0);
 	
 	try {
+		const user = await User.findOne({username: "a"});
+		
+		const allItems: ICartItem[] = [];
+		for (const item of cartItems) {
+			item.serverItem = await Item.findById(item._id);
+			allItems.push(item);
+		}
+		const price = allItems.reduce(((acc: number, item) => acc + (item.serverItem.price * item.qty)), 0);
 		const order = await Order.create({user, isDelivery, isPaid, price});
+		
 		const orderItems = [];
-		for (const cartItem of cartItems) {
+		for (const item of allItems) {
 			const completedOrderItem = await OrderItem.create({
-				name: cartItem.item.name,
-				price: cartItem.item.price,
-				qty: cartItem.qty,
-				img: cartItem.item.img,
+				name: item.serverItem.name,
+				price: item.serverItem.price,
+				qty: item.qty,
+				img: item.serverItem.img,
 				order: order._id
 			});
 			orderItems.push(completedOrderItem);

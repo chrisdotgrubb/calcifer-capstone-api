@@ -4,12 +4,18 @@ import logger from "morgan";
 import dotenv from "dotenv";
 import "./config/database";
 import apiRouter from "./routes/apiRouter";
+import cors from "cors";
+
+const corsOptions = {
+	origin: "*",
+};
 
 dotenv.config();
 
 const app = express();
 const port: string | number = process.env.PORT || 3001;
 
+app.use(cors(corsOptions));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
