@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 import {IOrder} from "./order";
 
 export interface IOrderItem {
-	name: string,
-	price: number,
-	qty: number,
-	img: string,
-	order: IOrder,
+	name: string;
+	price: number;
+	qty: number;
+	img: string;
+	order: IOrder;
 }
 
 const orderItemSchema = new mongoose.Schema({

@@ -1,10 +1,10 @@
-import {Schema, model} from "mongoose";
+import {model, Schema} from "mongoose";
 
 export interface IUser {
-	username: string,
-	password: string,
-	role: string,
-	isActive: boolean,
+	username: string;
+	password: string;
+	role: string;
+	isActive: boolean;
 }
 
 const userSchema = new Schema<IUser>({

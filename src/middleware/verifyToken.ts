@@ -4,8 +4,8 @@ import {NextFunction, Request, Response} from "express";
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "";
 
 interface IRequestUser extends Request {
-	user?: string,
-	role?: string
+	user?: string;
+	role?: string;
 }
 
 export default function verifyToken(req: IRequestUser, res: Response, next: NextFunction) {

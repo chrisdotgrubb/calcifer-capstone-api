@@ -3,11 +3,11 @@ import {IUser} from "./user";
 import {IOrderItem} from "./orderItem";
 
 export interface IOrder {
-	price: number,
-	isDelivery: boolean,
-	isPaid: boolean,
-	user: IUser,
-	orderItems: IOrderItem,
+	price: number;
+	isDelivery: boolean;
+	isPaid: boolean;
+	user: IUser;
+	orderItems: IOrderItem;
 }
 
 const orderSchema = new mongoose.Schema({

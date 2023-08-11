@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 export interface IItem {
-	name: string,
-	description: string,
-	price: number,
-	img: string,
+	name: string;
+	description: string;
+	price: number;
+	img: string;
 }
 
 const itemSchema = new mongoose.Schema({

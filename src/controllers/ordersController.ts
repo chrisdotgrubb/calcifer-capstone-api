@@ -39,6 +39,7 @@ export async function show(req: Request, res: Response): Promise<Response> {
 
 export async function create(req: Request, res: Response): Promise<Response> {
 	const cartItems: ICartItem[] = req.body.cartItems;
+	if (cartItems.length < 1) return res.status(400).json({error: "No items in cart"});
 	const isDelivery = req.body.isDelivery;
 	const isPaid = false;
 	

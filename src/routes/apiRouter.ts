@@ -3,12 +3,13 @@ import usersRouter from "./usersRouter";
 import authRouter from "./authRouter";
 import itemsRouter from "./itemsRouter";
 import ordersRouter from "./ordersRouter";
+import verifyToken from "../middleware/verifyToken";
 
 const router = Router();
 
 //				'/api'
 
-router.get("/", (req: Request, res: Response): void => {
+router.get("/", verifyToken, (req: Request, res: Response): void => {
 	res.status(200).json({working: true});
 });
 
