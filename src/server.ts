@@ -7,7 +7,7 @@ import apiRouter from "./routes/apiRouter";
 import cors from "cors";
 
 const corsOptions = {
-	origin: ["http://localhost:3000", "https://calcifer-capstone-client.vercel.app"],
+	origin: "https://calcifer-capstone-client.vercel.app",
 	credentials: true
 };
 
@@ -16,7 +16,9 @@ dotenv.config();
 const app = express();
 const port: string | number = process.env.PORT || 3001;
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
