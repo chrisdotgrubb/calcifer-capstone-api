@@ -4,7 +4,7 @@ import loginLimiter from "../middleware/loginLimiter";
 
 const router = Router();
 
-//				'/api'
+//				'/api/auth'
 
 router.get("/refresh", refresh);
 

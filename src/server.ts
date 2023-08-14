@@ -7,7 +7,8 @@ import apiRouter from "./routes/apiRouter";
 import cors from "cors";
 
 const corsOptions = {
-	origin: "*",
+	origin: ["http://localhost:3000",],
+	credentials: true
 };
 
 dotenv.config();
