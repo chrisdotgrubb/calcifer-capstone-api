@@ -7,7 +7,7 @@ import apiRouter from "./routes/apiRouter";
 import cors from "cors";
 
 const corsOptions = {
-	origin: ["http://localhost:3000",],
+	origin: ["http://localhost:3000", "https://calcifer-capstone-client.vercel.app"],
 	credentials: true
 };
 
